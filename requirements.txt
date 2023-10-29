@@ -3,3 +3,4 @@ gphoto2
 asyncio
 opencv-python
 pathlib
+numpy
