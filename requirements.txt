@@ -1,3 +1,4 @@
 streamlit
 gphoto2
 asyncio
+cv2
