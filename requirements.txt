@@ -1,4 +1,5 @@
 streamlit
 gphoto2
 asyncio
-cv2
+opencv-python
+pathlib
