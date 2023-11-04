@@ -123,7 +123,7 @@ def list_printers():
 
     printers = []
     for line in completed_process.stdout.splitlines():
-        if "printer" in line:
+        if "printer" in line or "Drucker" in line:
             printer_name = line.split(" ")[1]
             printers.append(printer_name)
 
@@ -135,6 +135,7 @@ def check_printer_exists(printer_name):
     Check if the specified printer exists in the list of available printers.
     """
     printers = list_printers()
+    print(f'Printers {printers}')
     return printer_name in printers
 
 
@@ -153,7 +154,7 @@ def save_image():
 
 async def print_image_async(image_path):
     print("Printing Image!")
-    cmd = f"lpr -o fit-to-page -o media=A6 -o landscape {image_path}"
+    cmd = f"lpr -P Canon_SELPHY_CP1500 -o fit-to-page -o media=A6 -o landscape -o color=true  {image_path}"
 
     process = await asyncio.create_subprocess_shell(
         cmd, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
