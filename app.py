@@ -65,7 +65,7 @@ async def capture_photo(output_filename="captured_image.jpg"):
         "--capture-image-and-download",
         "--debug-logfile=my-logfile.txt",
         "--filename",
-        "--keep",
+        "--set-config capturetarget=1",
         output_filename,
         "--force-overwrite",
     ]
