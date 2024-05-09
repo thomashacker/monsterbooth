@@ -65,6 +65,7 @@ async def capture_photo(output_filename="captured_image.jpg"):
         "--capture-image-and-download",
         "--debug-logfile=my-logfile.txt",
         "--filename",
+        "--keep",
         output_filename,
         "--force-overwrite",
     ]
@@ -110,22 +111,24 @@ def st_display_image(filename, overlay_filename):
 
 def list_printers():
     """
-    Return a list of available printers on the system.
+    Return a list of available and ready printers on the system.
     """
-    cmd = ["lpstat", "-p"]
+    cmd = ["lpstat", "-p", "-d"]
     completed_process = subprocess.run(
         cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
     )
 
     if completed_process.returncode != 0:
-        print("Error occurred while fetching the list of printers.")
+        print("Error occurred while fetching the list of printers:", completed_process.stderr)
         return []
 
     printers = []
     for line in completed_process.stdout.splitlines():
-        if "printer" in line or "Drucker" in line:
-            printer_name = line.split(" ")[1]
-            printers.append(printer_name)
+        if "printer" in line:
+            parts = line.split()
+            if len(parts) >= 4 and parts[3] == "idle":
+                printer_name = parts[1]
+                printers.append(printer_name)
 
     return printers
 
@@ -204,9 +207,9 @@ async def main():
     # Create a button in Streamlit
     if but1.button("📷 Mache ein Foto!"):
         for i in range(3, 0, -1):
-            st.write(f"Taking photo in... {i}")
+            st.write(f"Foto in... {i}")
             time.sleep(1)
-        st.write("Capturing...")
+        st.write("Cheesee...")
 
         await capture_photo()
         time.sleep(3)  # Wait a bit for the image to be fully saved
